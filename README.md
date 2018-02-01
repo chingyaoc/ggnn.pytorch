@@ -2,7 +2,7 @@
 
 This is a PyTorch implementation of the Gated Graph Sequence Neural Networks (GGNN) as described in the paper [Gated Graph Sequence Neural Networks](https://arxiv.org/abs/1511.05493) by Y. Li, D. Tarlow, M. Brockschmidt, and R. Zemel. This implementation gets 100% accuracy on node-selection bAbI task 4, 15, and 16. Their official implementation are available in the [yujiali/ggnn](https://github.com/yujiali/ggnn) repo on GitHub.
 
-<img src="image.png">    
+<img src="images/ggnn.png">    
 
 ## What is GGNN?
 - Solve graph-structured data and problems
@@ -40,8 +40,15 @@ Performances are evaluated on 50 random validation examples.
 | 15 | 100% |
 | 16 | 100% |
 
+Here's an example of bAbI deduction task (task 15)
+
+<img src="images/babi.png">
+
 ## Disclaimer
 The data processing codes are from official implementation [yujiali/ggnn](https://github.com/yujiali/ggnn).
+
+## TODO 
+- [ ] GraphLevel Output
 
 ## References
 - [Gated Graph Sequence Neural Networks](https://arxiv.org/abs/1511.05493), ICLR 2016
