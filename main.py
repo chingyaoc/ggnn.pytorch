@@ -16,7 +16,7 @@ from utils.data.dataset import bAbIDataset
 from utils.data.dataloader import bAbIDataloader
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--dataroot', type=str, default='babi_data/processed_1/train/4_graphs.txt', help='path to dataset')
+parser.add_argument('--task_id', type=int, default=4, help='bAbI task id')
 parser.add_argument('--question_id', type=int, default=0, help='question types')
 parser.add_argument('--workers', type=int, help='number of data loading workers', default=2)
 parser.add_argument('--batchSize', type=int, default=10, help='input batch size')
@@ -37,11 +37,13 @@ print("Random Seed: ", opt.manualSeed)
 random.seed(opt.manualSeed)
 torch.manual_seed(opt.manualSeed)
 
+opt.dataroot = 'babi_data/processed_1/train/%d_graphs.txt' % opt.task_id
+
 if opt.cuda:
     torch.cuda.manual_seed_all(opt.manualSeed)
 
 def main(opt):
-
+    
     train_dataset = bAbIDataset(opt.dataroot, opt.question_id, True)
     train_dataloader = bAbIDataloader(train_dataset, batch_size=opt.batchSize, shuffle=True, num_workers=2)
 
@@ -71,5 +73,4 @@ def main(opt):
 
 if __name__ == "__main__":
     main(opt)
-
 
