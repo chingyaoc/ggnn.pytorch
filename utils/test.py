@@ -14,7 +14,11 @@ def test(dataloader, net, criterion, optimizer, opt):
             annotation = annotation.cuda()
             target = target.cuda()
 
-        init_input, adj_matrix, annotation, target = Variable(init_input), Variable(adj_matrix), Variable(annotation), Variable(target)
+        init_input = Variable(init_input)
+        adj_matrix = Variable(adj_matrix)
+        annotation = Variable(annotation)
+        target = Variable(target)
+
         output = net(init_input, annotation, adj_matrix)
 
         test_loss += criterion(output, target).data[0]
