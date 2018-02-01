@@ -76,6 +76,7 @@ class GGNN(nn.Module):
         self.n_steps = opt.n_steps
 
         for i in range(self.n_edge_types):
+            # incoming and outgoing edge embedding
             in_fc = nn.Linear(self.state_dim, self.state_dim)
             out_fc = nn.Linear(self.state_dim, self.state_dim)
             self.add_module("in_{}".format(i), in_fc)
@@ -84,8 +85,10 @@ class GGNN(nn.Module):
         self.in_fcs = AttrProxy(self, "in_")
         self.out_fcs = AttrProxy(self, "out_")
 
+        # Propogation Model
         self.propogator = Propogator(self.state_dim, self.n_node, self.n_edge_types)
 
+        # Output Model
         self.out = nn.Sequential(
             nn.Linear(self.state_dim + self.annotation_dim, self.state_dim),
             nn.Tanh(),
