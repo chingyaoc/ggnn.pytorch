@@ -1,0 +1,1 @@
+eulerian-circuit=1

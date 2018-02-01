@@ -1,0 +1,2 @@
+has_color=1
+is=2

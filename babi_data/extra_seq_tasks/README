@@ -1,0 +1,121 @@
+Createdy by Danny Tarlow (dtarlow@microsoft.com)
+Oct.31, 2015
+
+
+=============================
+Graph Sequence bAbI tasks README
+=============================
+
+To generate a single question, call 
+
+$ python generate_data.py <task-id> <num-entities>
+
+The tasks are as follows:
+1  - Generate change
+2* - Coin order memory
+3  - Sorted coin order memory
+4  - Shortest paths
+5  - Eulerian circuits
+
+* Requires input order information
+
+
+==============================
+   Task 1: Generate change 
+==============================
+
+There are <num-entities> people. All people start with no money.  In
+each statement, they either receive a coin (one of [1, 5, 10, 25]) or
+lose a coin that they currently have. At the end, there is a question
+asking a target person to convert their money into an equivalent amount
+of money using as few coins as possible. The conversion is not necessarily
+optimal, but the answer is defined as the result of running the greedy
+algorithm that goes over coins in descending order of denomination value 
+and using as many of the current coin as possible, then repeating.
+
+An example problem may look like as follows:
+
+$ python generate_data.py 1 5
+A gets 5
+E gets 10
+E loses 10
+E gets 5
+E gets 5
+E gets 1
+eval make-change E  10,1,<end>
+
+Note that this should be solvable without using the temporal order of
+the inputs.
+
+===============================
+   Task 2: Coin order memory
+===============================
+
+The sequence of statements is the same as above, but now the goal is to
+return the coins that are target person has (no conversion) in the order
+that they received them. This requires knowing the order of the inputs.
+For example:
+
+$ python generate_data.py 2 5
+A gets 10
+B gets 5
+A gets 1
+B gets 25
+C loses 25
+E loses 10
+eval coins B    5,25,<end>
+
+
+======================================
+   Task 3: Sorted coin order memory
+======================================
+
+Same as above, but return the coins for a target person in sorted
+order, from largest to smallest. This does not require knowing the
+order of the inputs.
+
+$ python generate_data.py 3 5
+A gets 10
+B gets 5
+A gets 1
+B gets 25
+C loses 25
+E loses 10
+eval coins B    25,5,<end>
+
+
+============================
+   Task 4: Shortest paths
+============================
+
+Statements list edges in a graph, then the query is to find the shortest
+path from a given source node to a given target node:
+
+$ python generate_data.py 4 5
+0 connected-to 1
+0 connected-to 3
+1 connected-to 3
+2 connected-to 3
+2 connected-to 4
+eval shortest-path 4 3  4,2,3
+
+We reject any query that is ambiguous, so in all cases the answer is
+the unique shortest path.
+
+
+===============================
+   Task 5: Eulerian circuits
+===============================
+
+Statements list edges in a random 2-regular graph, then the query is to find
+an eulerian circuit that starts with the first two given nodes (giving
+the first two nodes resolves ambiguity about whether the circuit goes in
+clockwise our counter-clockwise order).
+
+$ python generate_data.py 5 5
+0 connected-to 2
+0 connected-to 3
+1 connected-to 3
+1 connected-to 4
+2 connected-to 4
+eval eulerian-circuit 0 3   0,3,1,4,2
