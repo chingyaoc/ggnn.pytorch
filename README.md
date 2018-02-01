@@ -42,7 +42,7 @@ Performances are evaluated on 50 random validation examples.
 
 Here's an example of bAbI deduction task (task 15)
 
-<img src="images/babi.png">
+<img src="images/babi15.png" width=700>
 
 ## Disclaimer
 The data processing codes are from official implementation [yujiali/ggnn](https://github.com/yujiali/ggnn).
