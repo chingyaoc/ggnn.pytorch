@@ -44,13 +44,13 @@ class Propogator(nn.Module):
 
     def forward(self, state_in, state_out, state_cur, A):
         A_in = A[:, :, :self.n_node*self.n_edge_types]
-        A_out = A[:, :, self.n_node*self.n_edge_types:]        
+        A_out = A[:, :, self.n_node*self.n_edge_types:]
 
         a_in = torch.bmm(A_in, state_in)
         a_out = torch.bmm(A_out, state_out)
         a = torch.cat((a_in, a_out, state_cur), 2)
 
-        r = self.reset_gate(a) 
+        r = self.reset_gate(a)
         z = self.update_gate(a)
         joined_input = torch.cat((a_in, a_out, r * state_cur), 2)
         h_hat = self.tansform(joined_input)
@@ -70,14 +70,14 @@ class GGNN(nn.Module):
         super(GGNN, self).__init__()
 
         assert (opt.state_dim >= opt.annotation_dim, 'state_dim must be no less than annotation_dim')
-        
+
         self.state_dim = opt.state_dim
         self.annotation_dim = opt.annotation_dim
         self.n_edge_types = opt.n_edge_types
         self.n_node = opt.n_node
         self.n_steps = opt.n_steps
 
-        for i in range(self.n_edge_types):            
+        for i in range(self.n_edge_types): 
             in_fc = nn.Linear(self.state_dim, self.state_dim)
             out_fc = nn.Linear(self.state_dim, self.state_dim)
             self.add_module("in_{}".format(i), in_fc)
@@ -103,12 +103,12 @@ class GGNN(nn.Module):
                 m.bias.data.fill_(0)
 
     def forward(self, input, annotation, A):
-        prop_state = input        
+        prop_state = input
 
         for i_step in range(self.n_steps):
             in_states = []
             out_states = []
-            for i in range(self.n_edge_types):    
+            for i in range(self.n_edge_types):
                 in_states.append(self.in_fcs[i](prop_state))
                 out_states.append(self.out_fcs[i](prop_state))
             in_states = torch.stack(in_states).transpose(0, 1).contiguous()
@@ -124,4 +124,3 @@ class GGNN(nn.Module):
         output = output.sum(2)
 
         return output
-
