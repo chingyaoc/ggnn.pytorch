@@ -5,7 +5,7 @@ This is a PyTorch implementation of the Gated Graph Sequence Neural Networks (GG
 <img src="image.png">    
 
 ## What is GGNN?
-- Solves graph-structured data and problems
+- Solve graph-structured data and problems
 - A gated propagation model to compute node representations
 - Unroll recurrence for a fixed number of steps and use backpropogation through time
 - An output model to make predictions on nodes
