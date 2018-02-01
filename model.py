@@ -1,8 +1,5 @@
-import numpy as np
 import torch
 import torch.nn as nn
-import torch.nn.init as init
-from torch.autograd import Variable
 
 class AttrProxy(object):
     """
@@ -69,7 +66,8 @@ class GGNN(nn.Module):
     def __init__(self, opt):
         super(GGNN, self).__init__()
 
-        assert (opt.state_dim >= opt.annotation_dim, 'state_dim must be no less than annotation_dim')
+        assert (opt.state_dim >= opt.annotation_dim,  \
+                'state_dim must be no less than annotation_dim')
 
         self.state_dim = opt.state_dim
         self.annotation_dim = opt.annotation_dim
@@ -77,7 +75,7 @@ class GGNN(nn.Module):
         self.n_node = opt.n_node
         self.n_steps = opt.n_steps
 
-        for i in range(self.n_edge_types): 
+        for i in range(self.n_edge_types):
             in_fc = nn.Linear(self.state_dim, self.state_dim)
             out_fc = nn.Linear(self.state_dim, self.state_dim)
             self.add_module("in_{}".format(i), in_fc)
@@ -102,9 +100,7 @@ class GGNN(nn.Module):
                 m.weight.data.normal_(0.0, 0.02)
                 m.bias.data.fill_(0)
 
-    def forward(self, input, annotation, A):
-        prop_state = input
-
+    def forward(self, prop_state, annotation, A):
         for i_step in range(self.n_steps):
             in_states = []
             out_states = []
